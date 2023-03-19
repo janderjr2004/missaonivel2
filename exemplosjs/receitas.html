@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Receitas</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body onload="preencheCatalogo()">
+  <div class="container-fluid bg-warning">
+    <h1 class="text-center">Catálogo de Receitas</h1>
+    <div class="d-flex flex-wrap" id="pnlCatalogo"></div>
+  </div>
+  <script src="receitas.js"></script>
+  <script>
+
+    function getListaIngredientes(receita) {
+        const lista = receita.ingredientes
+            .map((ingrediente) => `<li>${ingrediente}</li>`)
+            .reduce((acumulador, item) => acumulador + item, "");
+
+        return `<ul>${lista}</ul>`;
+    }
+
+
+    function getListaIngredientes(ingredientes) {
+      let html = '<ul>';
+      ingredientes.forEach(ingrediente => {
+        html += `<li>${ingrediente}</li>`;
+      });
+      html += '</ul>';
+      return html;
+    }
+
+    function getCard(receita) {
+      const { titulo, imagem, preparo, ingredientes } = receita;
+      const html = `
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <div class="card">
+            <img src="${imagem}" class="card-img-top" alt="${titulo}">
+            <div class="card-body">
+              <h5 class="card-title">${titulo}</h5>
+              <p class="card-text">${preparo}</p>
+              ${getListaIngredientes(ingredientes)}
+            </div>
+          </div>
+        </div>
+      `;
+      return html;
+    }
+
+    function preencheCatalogo() {
+    const receitas = [
+        {
+        titulo: "Bolo de Cenoura",
+        imagem: "https://conteudo.imguol.com.br/c/entretenimento/54/2022/02/22/bolo-de-cenoura---eu-mereco-1645533548938_v2_900x506.jpg.webp",
+        preparo: "1. Cozinhe as cenouras <br> 2. Bata as cenouras com os ovos no liquidificador <br> 3. Misture com os outros ingredientes e asse em forno médio por 30 minutos",
+        ingredientes: ["3 cenouras", "3 ovos", "1 xícara de óleo", "2 xícaras de açúcar", "3 xícaras de farinha de trigo", "1 colher (sopa) de fermento em pó"]
+        },
+        {
+        titulo: "Pão de Queijo",
+        imagem: "https://essareceitafunciona.com.br/wp-content/uploads/2022/07/Pao-de-queijo-Essa-Receita-Funciona-9.jpg",
+        preparo: "1. Misture os ingredientes <br> 2. Modele os pães de queijo <br> 3. Asse em forno médio por 20 minutos",
+        ingredientes: ["500g de polvilho azedo", "250ml de água", "125ml de óleo", "1 ovo", "150g de queijo minas", "Sal a gosto"]
+        },
+        {
+        titulo: "Lasanha",
+        imagem: "https://img.itdg.com.br/tdg/images/recipes/000/138/558/325115/325115_original.jpg?w=1200",
+        preparo: "1. Cozinhe a massa da lasanha <br> 2. Refogue a carne moída com os temperos <br> 3. Monte a lasanha em camadas, intercalando massa, molho e carne <br> 4. Cubra com molho branco e queijo ralado e leve ao forno médio por 30 minutos",
+        ingredientes: ["500g de massa para lasanha", "1kg de carne moída", "1 cebola", "2 dentes de alho", "1 pimentão", "1 lata de molho de tomate", "1 lata de creme de leite", "1 pacote de queijo ralado"]
+        }
+    ];
+
+    const pnlCatalogo = document.getElementById("pnlCatalogo");
+    const htmlReceitas = receitas.map(receita => getCard(receita)).reduce((acc, cur) => acc + cur, "");
+    pnlCatalogo.innerHTML = htmlReceitas;
+    }
+
+preencheCatalogo();
+
+    function getCard(receita) {
+  const listaIngredientes = getListaIngredientes(receita.ingredientes);
+
+  return `
+    <div class="card mb-4 mx-auto" style="width: 400px;">
+      <img src="${receita.imagem}" class="card-img-top" alt="${receita.titulo}">
+      <div class="card-body">
+        <h5 class="card-title">${receita.titulo}</h5>
+        <div class="card-text">
+          <ul>${listaIngredientes}</ul>
+          <hr>
+          ${receita.preparo}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+
+  </script>
+
+</body>
+</html>
